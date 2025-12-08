@@ -30,4 +30,10 @@ router.put("/contacts/:id", ContactController.update);
 router.get("/categories", CategoryController.index);
 router.post("/categories", CategoryController.store);
 
+// desafio: implementar delete e put pra categories
+
+router.get("/categories/:id", CategoryController.show);
+router.put("/categories/:id", CategoryController.update);
+router.delete("/categories/:id", CategoryController.delete);
+
 module.exports = router;
