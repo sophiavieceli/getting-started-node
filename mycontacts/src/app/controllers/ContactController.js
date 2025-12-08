@@ -5,7 +5,9 @@ class ContactController {
     async index(request, response) {
         // listar todos os registros
 
-        const contacts = await ContactsRepository.findAll();
+        const { orderBy } = request.query;
+
+        const contacts = await ContactsRepository.findAll(orderBy);
         // com await, mesmo sendo uma função bloqueante, não tira da call stack - porque só pode finalizar a requisição quando tiver os dados
 
         response.json(contacts); // .json quando retornar um array ou objeto
@@ -90,11 +92,12 @@ class ContactController {
         // deletar um registro
 
         const { id } = request.params;
-        const contact = await ContactsRepository.findById(id);
+        // PRO BANCO DE DADOS NÃO PRECISA DISSO, SE NÃO ENCONTRAR O ID SÓ NÃO EXCLUI NADA
+        // const contact = await ContactsRepository.findById(id);
 
-        if (!contact) {
-            return response.status(404).json({ error: "Contact not found" });
-        }
+        // if (!contact) {
+        //     return response.status(404).json({ error: "Contact not found" });
+        // }
 
         await ContactsRepository.delete(id);
         // 204: No Content - deu certo mas não tem nenhum corpo, mandando só o status

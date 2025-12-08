@@ -17,6 +17,18 @@ const app = express(); // instância do express
 
 app.use(express.json()); // middleware pra ter a propriedade body no obj request, necessário no POST
 app.use(routes); // express entende as rotas como middlewares também, por isso o .use
+app.use((error, request, response, next) => {
+    console.log("##### Error Handler");
+    console.log(error);
+    response.sendStatus(500);
+});
+// se um middleware recebe esses 4 argumentos, é um error handler
+// assim não aparece o stack trace e o tipo de erro pro usuário, só o código 500
+// stack trace continua aparecendo no console do servidor
+// problema de usar try/catch é que tem que repetir muito código
+// Error Handler (middleware especial do express) - se tiver um erro não tratado (fora de try/catch) em um controller, ele captura e passa pro Error Handler
+// precisa vir depois do middleware das rotas
+// a partir do express 5, não faz diferença o método ser async (pro try/catch não) - não precisa instalar express-async-errors
 
 // app.get("/", (request, response) => {
 //     response.send("Hello world!");
